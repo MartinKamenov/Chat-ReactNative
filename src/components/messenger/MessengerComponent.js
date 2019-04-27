@@ -1,29 +1,52 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button, TextInput, ScrollView } from 'react-native';
+import constants from '../../constants/constants';
 
 class MessengerComponent extends Component {
     state = { 
-        message : "",
-        size: 0,
-        number: parseInt(Math.random() * 10, 10)
+        recievedMessage : '',
+        newMessage: '',
+        connection: {}
     }
 
+    changeMessage = (text) => {
+        this.setState({newMessage: text});
+    }
+
+    sendMessage = () => {
+        const message = this.state.newMessage;
+        const connection = this.state.connection;
+        connection.send(message);
+        this.clearMessage();
+    }
     componentDidMount() {
-        this.connection = new WebSocket('ws://192.168.43.181:5000/messenger/1');
-        this.connection.onmessage = evt => { 
+        const id = 1;
+        const connection = new WebSocket(constants.WS_URL + id);
+        this.setState({connection});
+        this.showMessage(connection);
+    }
+
+    showMessage(connection) {
+        connection.onmessage = evt => { 
             this.setState({
-                message: evt.data
+                recievedMessage: evt.data
             })
         };
+    }
 
-        setInterval(() => {
-            this.connection.send("Message " + this.state.number);
-        }, 2000);
+    clearMessage() {
+        this.setState({newMessage: ''});
     }
     render() {
         return (
             <View>
-                <Text>{this.state.message}</Text>
+                <ScrollView>
+                    <Text>{this.state.recievedMessage}</Text>
+                </ScrollView>
+                <TextInput value={this.state.newMessage} 
+                    placeholder='Text'
+                    onChangeText={(text) => this.changeMessage(text)}/>
+                <Button title='Send' onPress={this.sendMessage}/>
             </View>
         );
     }
