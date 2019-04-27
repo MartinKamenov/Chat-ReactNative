@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
 
 class MessengerComponent extends Component {
@@ -10,7 +10,7 @@ class MessengerComponent extends Component {
     }
 
     changeMessage = (text) => {
-        this.setState({newMessage: text});
+        this.setState({ newMessage: text });
     }
 
     sendMessage = () => {
@@ -35,21 +35,53 @@ class MessengerComponent extends Component {
     }
 
     clearMessage() {
-        this.setState({newMessage: ''});
+        this.setState({ newMessage: '' });
     }
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <ScrollView>
-                    <Text>{this.state.recievedMessage}</Text>
+                    <Text style={styles.message}>{this.state.recievedMessage}</Text>
                 </ScrollView>
-                <TextInput value={this.state.newMessage} 
-                    placeholder='Text'
-                    onChangeText={(text) => this.changeMessage(text)}/>
-                <Button title='Send' onPress={this.sendMessage}/>
+                <View style={styles.senderContainer}>
+                    <TextInput
+                        style={styles.messageInput}
+                        value={this.state.newMessage} 
+                        placeholder='Text'
+                        onChangeText={(text) => this.changeMessage(text)}/>
+                    <Button
+                        style={styles.sendButton}
+                        title='Send'
+                        onPress={this.sendMessage}/>
+                </View>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#000',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    message: {
+        color: '#ffffff'
+    },
+    senderContainer: {
+        width: '100%',
+        position: 'absolute',
+        bottom:0
+    },
+    messageInput: {
+        width: '100%',
+        backgroundColor: '#ffffff',
+        color: '#000000'
+    },
+    sendButton: {
+        width: '100%'
+    }
+});
  
 export default MessengerComponent;
