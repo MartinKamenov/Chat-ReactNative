@@ -24,9 +24,11 @@ class MessengerComponent extends Component {
     componentDidMount() {
         const id = 1;
         apiService.getMessagesFromMessenger(id)
-            .then((response) => response.json())
+            .then((response) => {
+                return response.json();
+            })
             .then((messages) => {
-                this.setState({messages});
+                this.setState({ messages });
             })
             .catch((error) => {
                 console.error(error);
@@ -58,11 +60,13 @@ class MessengerComponent extends Component {
                 <ScrollView>
                     {
                         this.state.messages.map((message, i) => {
-                            <Text 
-                                key={i}
-                                style={styles.message}>
-                                {message}
-                            </Text>
+                            return (
+                                <Text 
+                                    key={i}
+                                    style={styles.message}>
+                                    {message}
+                                </Text>
+                            );
                         })
                     }
                 </ScrollView>
