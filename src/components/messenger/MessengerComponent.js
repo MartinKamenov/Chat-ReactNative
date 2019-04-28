@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
+import apiService from '../../services/apiService';
 
 class MessengerComponent extends Component {
-    state = { 
+    state = {
+        messages: [],
         recievedMessage : '',
         newMessage: '',
         connection: {}
@@ -21,15 +23,28 @@ class MessengerComponent extends Component {
     }
     componentDidMount() {
         const id = 1;
+        apiService.getMessagesFromMessenger(id)
+            .then((response) => response.json())
+            .then((messages) => {
+                this.setState({messages});
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         const connection = new WebSocket(constants.WS_URL + id);
         this.setState({connection});
         this.showMessage(connection);
     }
 
     showMessage(connection) {
-        connection.onmessage = evt => { 
+        connection.onmessage = evt => {
+            console.log(evt.data);
+            const message = evt.data;
+            const messages = this.state.messages;
+            messages.push(message);
             this.setState({
-                recievedMessage: evt.data
+                messages,
+                recievedMessage: message
             })
         };
     }
@@ -41,7 +56,15 @@ class MessengerComponent extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <Text style={styles.message}>{this.state.recievedMessage}</Text>
+                    {
+                        this.state.messages.map((message, i) => {
+                            <Text 
+                                key={i}
+                                style={styles.message}>
+                                {message}
+                            </Text>
+                        })
+                    }
                 </ScrollView>
                 <View style={styles.senderContainer}>
                     <TextInput
