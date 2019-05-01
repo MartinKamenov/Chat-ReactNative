@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ToastAndroid } from 'react-native';
+import apiService from '../../services/apiService';
 
 class LoginComponent extends Component {
     state = {
         username: '',
-        email: '',
         password: ''
     }
 
-    sendLoginRequest() {
-        
+    sendLoginRequest = () => {
+        const username = this.state.username;
+        const password = this.state.password;
+        apiService.loginUser(username, password)
+            .then(res => {
+                ToastAndroid.show(res, 5000);
+            });
     }
 
     changeStateValue = (field, value) => {
@@ -23,9 +28,6 @@ class LoginComponent extends Component {
                 <TextInput 
                     placeholder='Username' 
                     onChangeText={(text) => this.changeStateValue('username', text)}/>
-                <TextInput 
-                    placeholder='Email' 
-                    onChangeText={(text) => this.changeStateValue('email', text)}/>
                 <TextInput 
                     placeholder='Password' 
                     onChangeText={(text) => this.changeStateValue('password', text)}/>

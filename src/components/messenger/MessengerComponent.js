@@ -2,8 +2,21 @@ import React, { Component } from 'react';
 import { View, Text, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
+import PropTypes from 'prop-types';
 
 class MessengerComponent extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Chat',
+            headerTitleStyle: {
+                color: '#ffffff'
+            },
+            headerStyle: {
+                backgroundColor: '#000000'
+            },
+            headerTintColor: '#ffffff'
+        };
+    };
     state = {
         messages: [],
         recievedMessage : '',
@@ -40,7 +53,6 @@ class MessengerComponent extends Component {
 
     showMessage(connection) {
         connection.onmessage = evt => {
-            console.log(evt.data);
             const message = evt.data;
             const messages = this.state.messages;
             messages.push(message);
@@ -93,22 +105,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    messangeScrollView: {
+        height: '80%'
+    },
     message: {
         color: '#ffffff'
     },
     senderContainer: {
         width: '100%',
-        position: 'absolute',
-        bottom:0
+        height: '20%'
     },
     messageInput: {
+        height: '50%',
         width: '100%',
         backgroundColor: '#ffffff',
         color: '#000000'
     },
     sendButton: {
+        height: '50%',
         width: '100%'
     }
 });
+
+MessengerComponent.propTypes = {
+    navigation: PropTypes.object.isRequired
+};
  
 export default MessengerComponent;

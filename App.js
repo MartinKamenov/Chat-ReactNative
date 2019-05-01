@@ -4,9 +4,9 @@ import ChatListComponent from './src/components/chat-list/ChatListComponent';
 import MessengerComponent from './src/components/messenger/MessengerComponent';
 
 const MainNavigator = createStackNavigator({
-    MessengerComponent: {screen: MessengerComponent},
     LoginComponent: {screen: LoginComponent },
-    ChatListComponent: {screen: ChatListComponent},
+    MessengerComponent: {screen: MessengerComponent},
+    ChatListComponent: {screen: ChatListComponent}
 });
 
 const App = createAppContainer(MainNavigator);
