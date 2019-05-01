@@ -13,7 +13,8 @@ class LoginComponent extends Component {
         const password = this.state.password;
         apiService.loginUser(username, password)
             .then(res => {
-                ToastAndroid.show(res, 5000);
+                const message = res['_bodyText'];
+                ToastAndroid.show(message, 5000);
             });
     }
 
