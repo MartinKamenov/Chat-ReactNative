@@ -13,6 +13,7 @@ const apiService = {
         let data = {
             method: 'POST'
         };
+        
         const query = `?username=${username}&password=${password}`;
         const url = constants.API_URL + constants.LOGIN_PATH + query;
         return fetch(url, data);
@@ -26,6 +27,7 @@ const apiService = {
         let data = {
             method: 'POST'
         };
+
         const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}`;
         const url = constants.API_URL + constants.REGISTER_PATH + query;
         return fetch(url, data);

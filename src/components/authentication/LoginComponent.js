@@ -53,7 +53,7 @@ class LoginComponent extends Component {
                     placeholder='Password' 
                     onChangeText={(text) => this.changeStateValue('password', text)}/>
                 <Button title='Login' onPress={this.sendLoginRequest}/>
-                <Button title='Go to Sign up' onPress={this.sendLoginRequest}/>
+                <Button title='Go to Sign up' onPress={this.navigateToRegisterComponent}/>
             </View>
         );
     }

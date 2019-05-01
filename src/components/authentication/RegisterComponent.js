@@ -65,5 +65,9 @@ class RegisterComponent extends Component {
         );
     }
 }
+
+RegisterComponent.propTypes = {
+    navigation: PropTypes.object.isRequired
+};
  
 export default RegisterComponent;
