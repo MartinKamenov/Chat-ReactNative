@@ -59,7 +59,7 @@ class MessengerComponent extends Component {
             this.setState({
                 messages,
                 recievedMessage: message
-            })
+            });
         };
     }
 

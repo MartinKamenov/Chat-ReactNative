@@ -5,11 +5,14 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "build:android": "expo build:android"
+    "build:android": "expo build:android",
+    "lint": "eslint ./src",
+    "lintfix": "eslint ./src --fix"
   },
   "dependencies": {
     "@types/prop-types": "^15.7.1",
     "@types/react-navigation": "^3.0.6",
+    "babel-eslint": "^10.0.1",
     "expo": "^32.0.0",
     "prop-types": "^15.7.2",
     "react": "16.5.0",
@@ -17,7 +20,9 @@
     "react-navigation": "^3.9.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4"
   },
   "private": true
 }
