@@ -12,20 +12,22 @@ const apiService = {
 
         let data = {
             method: 'POST'
-            // credentials: 'same-origin',
-            // mode: 'same-origin',
-            // body: JSON.stringify({
-            //   appoid: appo_id
-            // }),
-            // headers: {
-            //   'Accept':       'application/json',
-            //   'Content-Type': 'application/json',
-            //   'X-CSRFToken':  cookie.load('csrftoken')
-            // }
-          }
+        };
         const query = `?username=${username}&password=${password}`;
         const url = constants.API_URL + constants.LOGIN_PATH + query;
-        console.log(url);
+        return fetch(url, data);
+    },
+
+    registerUser: function(username, email, password) {
+        if(!username || !email || !password) {
+            return;
+        }
+
+        let data = {
+            method: 'POST'
+        };
+        const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}`;
+        const url = constants.API_URL + constants.REGISTER_PATH + query;
         return fetch(url, data);
     }
 };

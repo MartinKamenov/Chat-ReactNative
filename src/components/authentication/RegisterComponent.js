@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
 
-class LoginComponent extends Component {
+class RegisterComponent extends Component {
     static navigationOptions = {
-        title: 'Login',
+        title: 'Register',
         headerTitleStyle: {
             color: '#ffffff'
         },
@@ -16,17 +16,24 @@ class LoginComponent extends Component {
     };
     state = {
         username: '',
-        password: ''
+        email: '',
+        password: '',
+        passwordRepeat: ''
     }
 
-    sendLoginRequest = () => {
+    sendRegisterRequest = () => {
         const username = this.state.username;
         const password = this.state.password;
-        apiService.loginUser(username, password)
+        const email = this.state.email;
+        const passwordRepeat = this.state.passwordRepeat;
+        if(password !== passwordRepeat) {
+            return;
+        }
+        apiService.registerUser(username, email, password)
             .then(res => {
                 const message = res['_bodyText'];
                 ToastAndroid.show(message, 5000);
-                if(message === constants.LOGIN_SUCCESS_MESSAGE) {
+                if(message === constants.REGISTER_SUCCESS_MESSAGE) {
                     const { navigate } = this.props.navigation;
                     navigate('MessengerComponent');
                 }
@@ -38,11 +45,6 @@ class LoginComponent extends Component {
         state[field] = value;
         this.setState(state);
     }
-
-    navigateToRegisterComponent = () => {
-        const { navigate } = this.props.navigation;
-        navigate('RegisterComponent');
-    }
     render() { 
         return (
             <View>
@@ -50,17 +52,18 @@ class LoginComponent extends Component {
                     placeholder='Username' 
                     onChangeText={(text) => this.changeStateValue('username', text)}/>
                 <TextInput 
+                    placeholder='Email' 
+                    onChangeText={(text) => this.changeStateValue('email', text)}/>
+                <TextInput 
                     placeholder='Password' 
                     onChangeText={(text) => this.changeStateValue('password', text)}/>
-                <Button title='Login' onPress={this.sendLoginRequest}/>
-                <Button title='Go to Sign up' onPress={this.sendLoginRequest}/>
+                <TextInput 
+                    placeholder='Password confirm' 
+                    onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
+                <Button title='Register' onPress={this.sendRegisterRequest}/>
             </View>
         );
     }
 }
-
-LoginComponent.propTypes = {
-    navigation: PropTypes.object.isRequired
-};
  
-export default LoginComponent;
+export default RegisterComponent;
