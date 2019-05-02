@@ -3,6 +3,7 @@ import { View, TextInput, Button, StyleSheet, ToastAndroid } from 'react-native'
 import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class RegisterComponent extends Component {
     static navigationOptions = {
@@ -34,8 +35,14 @@ class RegisterComponent extends Component {
                 const message = res['_bodyText'];
                 ToastAndroid.show(message, 5000);
                 if(message === constants.REGISTER_SUCCESS_MESSAGE) {
-                    const { navigate } = this.props.navigation;
-                    navigate('MessengerComponent');
+                    const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [
+                          NavigationActions.navigate({ routeName: 'MessengerComponent'})
+                        ] 
+                    });
+                    
+                    this.props.navigation.dispatch(resetAction);
                 }
             });
     }
@@ -44,6 +51,17 @@ class RegisterComponent extends Component {
         const state = this.state;
         state[field] = value;
         this.setState(state);
+    }
+
+    navigateToLoginComponent = () => {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'LoginComponent'})
+            ] 
+        });
+
+        this.props.navigation.dispatch(resetAction);
     }
     render() { 
         return (
@@ -61,6 +79,7 @@ class RegisterComponent extends Component {
                     placeholder='Password confirm' 
                     onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
                 <Button title='Register' onPress={this.sendRegisterRequest}/>
+                <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
             </View>
         );
     }

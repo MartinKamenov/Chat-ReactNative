@@ -3,6 +3,7 @@ import { View, TextInput, Button, StyleSheet, ToastAndroid } from 'react-native'
 import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class LoginComponent extends Component {
     static navigationOptions = {
@@ -27,8 +28,14 @@ class LoginComponent extends Component {
                 const message = res['_bodyText'];
                 ToastAndroid.show(message, 5000);
                 if(message === constants.LOGIN_SUCCESS_MESSAGE) {
-                    const { navigate } = this.props.navigation;
-                    navigate('MessengerComponent');
+                    const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [
+                          NavigationActions.navigate({ routeName: 'MessengerComponent'})
+                        ] 
+                    });
+                    
+                    this.props.navigation.dispatch(resetAction);
                 }
             });
     }
@@ -40,8 +47,14 @@ class LoginComponent extends Component {
     }
 
     navigateToRegisterComponent = () => {
-        const { navigate } = this.props.navigation;
-        navigate('RegisterComponent');
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'RegisterComponent'})
+            ] 
+        });
+
+        this.props.navigation.dispatch(resetAction);
     }
     render() { 
         return (
