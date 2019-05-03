@@ -29,7 +29,7 @@ class LoginComponent extends Component {
         apiService.loginUser(username, password)
             .then(res => {
                 const message = res['_bodyText'];
-                ToastAndroid.show(message, 5000);
+                ToastAndroid.show(message, constants.TOAST_DUARTION);
                 this.setState({ isLoading: false });
                 if(message === constants.LOGIN_SUCCESS_MESSAGE) {
                     const resetAction = StackActions.reset({
@@ -42,7 +42,7 @@ class LoginComponent extends Component {
                     this.props.navigation.dispatch(resetAction);
                 }
             }).catch((e) => {
-                ToastAndroid.show(e.message, 5000);
+                ToastAndroid.show(e.message, constants.TOAST_DUARTION);
                 this.setState({ isLoading: false });
             });
     }
@@ -80,7 +80,7 @@ class LoginComponent extends Component {
         }
 
         return (
-            <LoadingComponent/>
+            <LoadingComponent loadingText='Please wait to finish login'/>
         );
     }
 }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
 import { StackActions, NavigationActions } from 'react-navigation';
+import LoadingComponent from '../loading/LoadingComponent';
 
 class RegisterComponent extends Component {
     static navigationOptions = {
@@ -19,7 +20,8 @@ class RegisterComponent extends Component {
         username: '',
         email: '',
         password: '',
-        passwordRepeat: ''
+        passwordRepeat: '',
+        isLoading: false
     }
 
     sendRegisterRequest = () => {
@@ -30,10 +32,13 @@ class RegisterComponent extends Component {
         if(password !== passwordRepeat) {
             return;
         }
+
+        this.setState({ isLoading: true });
         apiService.registerUser(username, email, password)
             .then(res => {
                 const message = res['_bodyText'];
-                ToastAndroid.show(message, 5000);
+                ToastAndroid.show(message, constants.TOAST_DUARTION);
+                this.setState({ isLoading: false });
                 if(message === constants.REGISTER_SUCCESS_MESSAGE) {
                     const resetAction = StackActions.reset({
                         index: 0,
@@ -63,24 +68,30 @@ class RegisterComponent extends Component {
 
         this.props.navigation.dispatch(resetAction);
     }
-    render() { 
+    render() {
+        if(!this.state.isLoading) {
+            return (
+                <View>
+                    <TextInput 
+                        placeholder='Username' 
+                        onChangeText={(text) => this.changeStateValue('username', text)}/>
+                    <TextInput 
+                        placeholder='Email' 
+                        onChangeText={(text) => this.changeStateValue('email', text)}/>
+                    <TextInput 
+                        placeholder='Password' 
+                        onChangeText={(text) => this.changeStateValue('password', text)}/>
+                    <TextInput 
+                        placeholder='Password confirm' 
+                        onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
+                    <Button title='Register' onPress={this.sendRegisterRequest}/>
+                    <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
+                </View>
+            );
+        }
+
         return (
-            <View>
-                <TextInput 
-                    placeholder='Username' 
-                    onChangeText={(text) => this.changeStateValue('username', text)}/>
-                <TextInput 
-                    placeholder='Email' 
-                    onChangeText={(text) => this.changeStateValue('email', text)}/>
-                <TextInput 
-                    placeholder='Password' 
-                    onChangeText={(text) => this.changeStateValue('password', text)}/>
-                <TextInput 
-                    placeholder='Password confirm' 
-                    onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
-                <Button title='Register' onPress={this.sendRegisterRequest}/>
-                <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
-            </View>
+            <LoadingComponent loadingText='Please wait to finish registration'/>
         );
     }
 }
