@@ -10,7 +10,6 @@
     "lintfix": "eslint ./src --fix"
   },
   "dependencies": {
-    "@types/prop-types": "^15.7.1",
     "@types/react-navigation": "^3.0.6",
     "babel-eslint": "^10.0.1",
     "expo": "^32.0.0",

@@ -1,6 +1,7 @@
 const constants = {
-    API_URL: 'https://mkchat-api.herokuapp.com',
-    WS_URL: 'ws://mkchat-api.herokuapp.com/messenger/',
+    DOMAIN: '192.168.43.181:5000',
+    API_URL: `http://${this.DOMAIN}`,
+    WS_URL: `ws://${this.DOMAIN}/messenger/`,
     MESSENGER_PATH: '/messenger/',
     LOGIN_PATH: '/auth/login',
     REGISTER_PATH: '/auth/register',

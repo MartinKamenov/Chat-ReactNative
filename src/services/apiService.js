@@ -1,4 +1,11 @@
 import constants from '../constants/constants';
+
+const postData = {
+    method: 'POST',
+    credentials: 'same-origin',
+    mode: 'same-origin'
+};
+
 const apiService = {
     getMessagesFromMessenger: function(id) {
         const url = constants.API_URL + constants.MESSENGER_PATH + id;
@@ -9,14 +16,10 @@ const apiService = {
         if(!username || !password) {
             return;
         }
-
-        let data = {
-            method: 'POST'
-        };
         
         const query = `?username=${username}&password=${password}`;
         const url = constants.API_URL + constants.LOGIN_PATH + query;
-        return fetch(url, data);
+        return fetch(url, postData);
     },
 
     registerUser: function(username, email, password) {
@@ -24,13 +27,9 @@ const apiService = {
             return;
         }
 
-        let data = {
-            method: 'POST'
-        };
-
         const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}`;
         const url = constants.API_URL + constants.REGISTER_PATH + query;
-        return fetch(url, data);
+        return fetch(url, postData);
     }
 };
 

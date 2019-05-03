@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
 import { StackActions, NavigationActions } from 'react-navigation';
+import LoadingComponent from '../loading/LoadingComponent';
 
 class LoginComponent extends Component {
     static navigationOptions = {
@@ -17,16 +18,19 @@ class LoginComponent extends Component {
     };
     state = {
         username: '',
-        password: ''
+        password: '',
+        isLoading: false
     }
 
     sendLoginRequest = () => {
         const username = this.state.username;
         const password = this.state.password;
+        this.setState({ isLoading: true });
         apiService.loginUser(username, password)
             .then(res => {
                 const message = res['_bodyText'];
                 ToastAndroid.show(message, 5000);
+                this.setState({ isLoading: false });
                 if(message === constants.LOGIN_SUCCESS_MESSAGE) {
                     const resetAction = StackActions.reset({
                         index: 0,
@@ -37,6 +41,9 @@ class LoginComponent extends Component {
                     
                     this.props.navigation.dispatch(resetAction);
                 }
+            }).catch((e) => {
+                ToastAndroid.show(e.message, 5000);
+                this.setState({ isLoading: false });
             });
     }
 
@@ -56,18 +63,24 @@ class LoginComponent extends Component {
 
         this.props.navigation.dispatch(resetAction);
     }
-    render() { 
+    render() {
+        if(!this.state.isLoading) {
+            return (
+                <View>
+                    <TextInput 
+                        placeholder='Username' 
+                        onChangeText={(text) => this.changeStateValue('username', text)}/>
+                    <TextInput 
+                        placeholder='Password' 
+                        onChangeText={(text) => this.changeStateValue('password', text)}/>
+                    <Button title='Login' onPress={this.sendLoginRequest}/>
+                    <Button title='Go to Sign up' onPress={this.navigateToRegisterComponent}/>
+                </View>
+            );
+        }
+
         return (
-            <View>
-                <TextInput 
-                    placeholder='Username' 
-                    onChangeText={(text) => this.changeStateValue('username', text)}/>
-                <TextInput 
-                    placeholder='Password' 
-                    onChangeText={(text) => this.changeStateValue('password', text)}/>
-                <Button title='Login' onPress={this.sendLoginRequest}/>
-                <Button title='Go to Sign up' onPress={this.navigateToRegisterComponent}/>
-            </View>
+            <LoadingComponent/>
         );
     }
 }
