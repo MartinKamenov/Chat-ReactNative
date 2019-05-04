@@ -31,6 +31,9 @@ class MessengerComponent extends Component {
 
     sendMessage = () => {
         const message = this.state.newMessage;
+        if(!message.length) {
+            return;
+        }
         const connection = this.state.connection;
         connection.send(message);
         this.clearMessage();
@@ -72,7 +75,7 @@ class MessengerComponent extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView style={styles.scrollContainer}>
                     <MessagesListComponent messages={this.state.messages}/>
                 </ScrollView>
                 <View style={styles.senderContainer}>
@@ -94,9 +97,13 @@ class MessengerComponent extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         backgroundColor: '#000',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    scrollContainer: {
+        width: '100%',
     },
     messangeScrollView: {
         height: '80%'

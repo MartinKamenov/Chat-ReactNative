@@ -4,13 +4,26 @@ import PropTypes from 'prop-types';
 
 const MessageComponent = ({ message }) => {
     return (
-        <Text style={styles.message}>{message.text}</Text>
+        <Text style={[styles.anotherUserMessage, styles.message]}>{message.text}</Text>
     );
 };
 
 const styles = StyleSheet.create({
     message: {
-        color: '#ffffff'
+        borderRadius: 15,
+        width: '40%',
+        padding: 10,
+        marginTop: 10
+    },
+    myMessage: {
+        alignSelf: 'flex-start',
+        color: '#FFFFFF',
+        backgroundColor: '#0099FF'
+    },
+    anotherUserMessage: {
+        alignSelf: 'flex-end',
+        color: '#000000',
+        backgroundColor: '#F1F0F0'
     }
 });
 
