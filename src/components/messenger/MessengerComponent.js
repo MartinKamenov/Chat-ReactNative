@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
+import MessagesListComponent from './MessagesListComponent';
 
 class MessengerComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -38,7 +39,8 @@ class MessengerComponent extends Component {
         const id = 1;
         apiService.getMessagesFromMessenger(id)
             .then((response) => {
-                return response.json();
+                let jsonResponse = response.json();
+                return jsonResponse;
             })
             .then((messages) => {
                 this.setState({ messages });
@@ -53,7 +55,8 @@ class MessengerComponent extends Component {
 
     showMessage(connection) {
         connection.onmessage = evt => {
-            const message = evt.data;
+            let message = evt.data;
+            message = JSON.parse(message);
             const messages = this.state.messages;
             messages.push(message);
             this.setState({
@@ -70,17 +73,7 @@ class MessengerComponent extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    {
-                        this.state.messages.map((message, i) => {
-                            return (
-                                <Text 
-                                    key={i}
-                                    style={styles.message}>
-                                    {message}
-                                </Text>
-                            );
-                        })
-                    }
+                    <MessagesListComponent messages={this.state.messages}/>
                 </ScrollView>
                 <View style={styles.senderContainer}>
                     <TextInput
@@ -107,9 +100,6 @@ const styles = StyleSheet.create({
     },
     messangeScrollView: {
         height: '80%'
-    },
-    message: {
-        color: '#ffffff'
     },
     senderContainer: {
         width: '100%',
