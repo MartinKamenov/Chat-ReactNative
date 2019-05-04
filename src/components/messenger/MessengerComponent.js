@@ -40,6 +40,14 @@ class MessengerComponent extends Component {
     }
     componentDidMount() {
         const id = 1;
+        this.fetchMessages(id)
+        
+        const connection = new WebSocket(constants.WS_URL + id);
+        this.setState({connection});
+        this.showMessage(connection);
+    }
+
+    fetchMessages(id) {
         apiService.getMessagesFromMessenger(id)
             .then((response) => {
                 let jsonResponse = response.json();
@@ -51,9 +59,6 @@ class MessengerComponent extends Component {
             .catch((error) => {
                 console.error(error);
             });
-        const connection = new WebSocket(constants.WS_URL + id);
-        this.setState({connection});
-        this.showMessage(connection);
     }
 
     showMessage(connection) {
