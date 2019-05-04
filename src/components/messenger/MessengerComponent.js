@@ -78,6 +78,21 @@ class MessengerComponent extends Component {
         this.setState({ newMessage: '' });
     }
     render() {
+        let messages = this.state.messages;
+        let messageGroups = [];
+        let newGroup = [];
+        messages.forEach((message, i) => {
+            if(i !== 0 && message.userId !== messages[i - 1].userId) {
+                messageGroups.push(newGroup);
+                newGroup = [message];
+            } else if(i === messages.length - 1) {
+                newGroup.push(message);
+                messageGroups.push(newGroup);
+            }
+
+            newGroup.push(message);
+        });
+        console.log(messageGroups);
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.scrollContainer}>
