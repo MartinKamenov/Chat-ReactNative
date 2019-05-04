@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         width: '40%',
         padding: 10,
-        marginTop: 10
+        marginTop: 10,
+        textAlign: 'center'
     },
     myUsername: {
         alignSelf: 'flex-end',
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 
 UserDetailsComponent.propTypes = {
     username: PropTypes.string.isRequired,
-    isMind: PropTypes.bool.isRequired
+    isMine: PropTypes.bool.isRequired
 };
  
 export default UserDetailsComponent;

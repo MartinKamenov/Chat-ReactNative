@@ -4,6 +4,7 @@ import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
 import MessagesListComponent from './MessagesListComponent';
+import UserMessengerComponent from './UserMessengerComponent';
 
 class MessengerComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -88,15 +89,21 @@ class MessengerComponent extends Component {
             } else if(i === messages.length - 1) {
                 newGroup.push(message);
                 messageGroups.push(newGroup);
+            } else {
+                newGroup.push(message);
             }
-
-            newGroup.push(message);
         });
-        console.log(messageGroups);
+
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.scrollContainer}>
-                    <MessagesListComponent messages={this.state.messages}/>
+                    {messageGroups.map((messageGroup, i) => {
+                        return (<UserMessengerComponent
+                            key={i}
+                            messages={messageGroup} 
+                            username={messageGroup[i].username}
+                            isMine={messageGroup[i].isMine}/>);
+                    })}
                 </ScrollView>
                 <View style={styles.senderContainer}>
                     <TextInput
