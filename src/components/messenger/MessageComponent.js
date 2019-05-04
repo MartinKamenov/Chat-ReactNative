@@ -3,9 +3,11 @@ import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 const MessageComponent = ({ message }) => {
-    return (
-        <Text style={[styles.anotherUserMessage, styles.message]}>{message.text}</Text>
-    );
+    if(message.isMine) {
+        return <Text style={[styles.myMessage, styles.message]}>{message.text}</Text>;
+    }
+
+    return <Text style={[styles.anotherUserMessage, styles.message]}>{message.text}</Text>;
 };
 
 const styles = StyleSheet.create({
@@ -13,15 +15,16 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         width: '40%',
         padding: 10,
-        marginTop: 10
+        marginTop: 10,
+        textAlign: 'center'
     },
     myMessage: {
-        alignSelf: 'flex-start',
+        alignSelf: 'flex-end',
         color: '#FFFFFF',
         backgroundColor: '#0099FF'
     },
     anotherUserMessage: {
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         color: '#000000',
         backgroundColor: '#F1F0F0'
     }
@@ -31,7 +34,8 @@ MessageComponent.propTypes = {
     message: PropTypes.shape({
         id: PropTypes.string.isRequired,
         dateCreated: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
+        text: PropTypes.string.isRequired,
+        isMine: PropTypes.bool.isRequired
     }).isRequired
 };
  
