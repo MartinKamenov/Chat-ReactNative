@@ -21,6 +21,7 @@ class RegisterComponent extends Component {
         email: '',
         password: '',
         passwordRepeat: '',
+        imageUrl: '',
         isLoading: false
     }
 
@@ -29,12 +30,13 @@ class RegisterComponent extends Component {
         const password = this.state.password;
         const email = this.state.email;
         const passwordRepeat = this.state.passwordRepeat;
+        const imageUrl = this.state.imageUrl;
         if(password !== passwordRepeat) {
             return;
         }
 
         this.setState({ isLoading: true });
-        apiService.registerUser(username, email, password)
+        apiService.registerUser(username, email, password, imageUrl)
             .then(res => {
                 const message = res['_bodyText'];
                 ToastAndroid.show(message, constants.TOAST_DUARTION);
@@ -84,6 +86,9 @@ class RegisterComponent extends Component {
                     <TextInput 
                         placeholder='Password confirm' 
                         onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
+                    <TextInput 
+                        placeholder='Profile image url' 
+                        onChangeText={(text) => this.changeStateValue('imageUrl', text)}/>
                     <Button title='Register' onPress={this.sendRegisterRequest}/>
                     <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
                 </View>

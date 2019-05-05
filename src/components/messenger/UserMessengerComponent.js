@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import UserDetailsComponent from './UserDetailsComponent';
 import MessagesListComponent from './MessagesListComponent';
 
-const UserMessengerComponent = ({ username, isMine, messages }) => {
+const UserMessengerComponent = ({ username, isMine, messages, imageUrl }) => {
     return (
         <View style={styles.userMessengerContainer}>
-            <UserDetailsComponent username={username} isMine={isMine}/>
+            <UserDetailsComponent username={username} isMine={isMine} imageUrl={imageUrl}/>
             <MessagesListComponent messages={messages}/>
         </View>
     );
@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
 UserMessengerComponent.propTypes = {
     username: PropTypes.string.isRequired,
     isMine: PropTypes.bool.isRequired,
-    messages: PropTypes.array.isRequired
+    messages: PropTypes.array.isRequired,
+    imageUrl: PropTypes.string
 };
  
 export default UserMessengerComponent;
