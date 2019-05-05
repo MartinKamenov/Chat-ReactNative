@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const UserDetailsComponent = ({username, isMine}) => {
     if(isMine) {
-        return <Text style={[styles.usernameText, styles.otherUserUsername]}>{username}</Text>;
+        return <Text style={[styles.usernameText, styles.myUsername]}>{username}</Text>;
     }
     return <Text style={[styles.usernameText, styles.otherUserUsername]}>{username}</Text>;
 };

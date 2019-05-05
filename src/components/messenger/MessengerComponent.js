@@ -84,6 +84,12 @@ class MessengerComponent extends Component {
         let newGroup = [];
         messages.forEach((message, i) => {
             if(i !== 0 && message.userId !== messages[i - 1].userId) {
+                if(i === messages.length - 1) {
+                    messageGroups.push(newGroup);
+                    newGroup = [message];
+                    messageGroups.push(newGroup);
+                    return;
+                }
                 messageGroups.push(newGroup);
                 newGroup = [message];
             } else if(i === messages.length - 1) {
@@ -101,8 +107,8 @@ class MessengerComponent extends Component {
                         return (<UserMessengerComponent
                             key={i}
                             messages={messageGroup} 
-                            username={messageGroup[i].username}
-                            isMine={messageGroup[i].isMine}/>);
+                            username={messageGroup[0].username}
+                            isMine={messageGroup[0].isMine}/>);
                     })}
                 </ScrollView>
                 <View style={styles.senderContainer}>
