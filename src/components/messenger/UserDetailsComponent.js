@@ -6,7 +6,9 @@ const UserDetailsComponent = ({username, isMine, imageUrl}) => {
     if(isMine) {
         return (
             <View>
-                <Image source={{uri: imageUrl}}/>
+                <Image 
+                    style={[styles.profileImage, styles.myProfileImage]} 
+                    source={{uri: imageUrl}}/>
                 <Text
                     style={[styles.usernameText, styles.myUsername]}>
                     {username}
@@ -16,7 +18,9 @@ const UserDetailsComponent = ({username, isMine, imageUrl}) => {
     }
     return (
         <View>
-            <Image source={{uri: imageUrl}}/>
+            <Image
+                style={[styles.profileImage, styles.otherUserProfileImage]}
+                source={{uri: imageUrl}}/>
             <Text 
                 style={[styles.usernameText, styles.otherUserUsername]}>
                 {username}
@@ -40,6 +44,17 @@ const styles = StyleSheet.create({
     otherUserUsername: {
         alignSelf: 'flex-start',
         color: '#F1F0F0'
+    },
+    profileImage: {
+        width: '40%',
+        marginTop: 10,
+        height: 50
+    },
+    myProfileImage: {
+        alignSelf: 'flex-end'
+    },
+    otherUserProfileImage: {
+        alignSelf: 'flex-start'
     }
 });
 
