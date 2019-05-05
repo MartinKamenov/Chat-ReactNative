@@ -1,12 +1,28 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
-const UserDetailsComponent = ({username, isMine}) => {
+const UserDetailsComponent = ({username, isMine, imageUrl}) => {
     if(isMine) {
-        return <Text style={[styles.usernameText, styles.myUsername]}>{username}</Text>;
+        return (
+            <View>
+                <Image source={{uri: imageUrl}}/>
+                <Text
+                    style={[styles.usernameText, styles.myUsername]}>
+                    {username}
+                </Text>
+            </View>
+        );
     }
-    return <Text style={[styles.usernameText, styles.otherUserUsername]}>{username}</Text>;
+    return (
+        <View>
+            <Image source={{uri: imageUrl}}/>
+            <Text 
+                style={[styles.usernameText, styles.otherUserUsername]}>
+                {username}
+            </Text>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -29,7 +45,8 @@ const styles = StyleSheet.create({
 
 UserDetailsComponent.propTypes = {
     username: PropTypes.string.isRequired,
-    isMine: PropTypes.bool.isRequired
+    isMine: PropTypes.bool.isRequired,
+    imageUrl: PropTypes.string
 };
  
 export default UserDetailsComponent;

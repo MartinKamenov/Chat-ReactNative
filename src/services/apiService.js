@@ -27,12 +27,12 @@ const apiService = {
         return fetch(url, postData);
     },
 
-    registerUser: function(username, email, password) {
-        if(!username || !email || !password) {
+    registerUser: function(username, email, password, imageUrl) {
+        if(!username || !email || !password || !imageUrl) {
             return;
         }
 
-        const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}`;
+        const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}&imageUrl=${imageUrl}`;
         const url = constants.API_URL + constants.REGISTER_PATH + query;
         return fetch(url, postData);
     }

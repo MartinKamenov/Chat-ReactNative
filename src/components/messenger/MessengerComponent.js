@@ -108,7 +108,8 @@ class MessengerComponent extends Component {
                             key={i}
                             messages={messageGroup} 
                             username={messageGroup[0].username}
-                            isMine={messageGroup[0].isMine}/>);
+                            isMine={messageGroup[0].isMine}
+                            imageUrl={messageGroup[0].imageUrl}/>);
                     })}
                 </ScrollView>
                 <View style={styles.senderContainer}>
