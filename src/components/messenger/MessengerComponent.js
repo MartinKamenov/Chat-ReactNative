@@ -4,6 +4,7 @@ import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
 import MessagesListComponent from './MessagesListComponent';
+import UserMessengerComponent from './UserMessengerComponent';
 
 class MessengerComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,12 +32,23 @@ class MessengerComponent extends Component {
 
     sendMessage = () => {
         const message = this.state.newMessage;
+        if(!message.length) {
+            return;
+        }
         const connection = this.state.connection;
         connection.send(message);
         this.clearMessage();
     }
     componentDidMount() {
         const id = 1;
+        this.fetchMessages(id)
+        
+        const connection = new WebSocket(constants.WS_URL + id);
+        this.setState({connection});
+        this.showMessage(connection);
+    }
+
+    fetchMessages(id) {
         apiService.getMessagesFromMessenger(id)
             .then((response) => {
                 let jsonResponse = response.json();
@@ -48,9 +60,6 @@ class MessengerComponent extends Component {
             .catch((error) => {
                 console.error(error);
             });
-        const connection = new WebSocket(constants.WS_URL + id);
-        this.setState({connection});
-        this.showMessage(connection);
     }
 
     showMessage(connection) {
@@ -70,10 +79,37 @@ class MessengerComponent extends Component {
         this.setState({ newMessage: '' });
     }
     render() {
+        let messages = this.state.messages;
+        let messageGroups = [];
+        let newGroup = [];
+        messages.forEach((message, i) => {
+            if(i !== 0 && message.userId !== messages[i - 1].userId) {
+                if(i === messages.length - 1) {
+                    messageGroups.push(newGroup);
+                    newGroup = [message];
+                    messageGroups.push(newGroup);
+                    return;
+                }
+                messageGroups.push(newGroup);
+                newGroup = [message];
+            } else if(i === messages.length - 1) {
+                newGroup.push(message);
+                messageGroups.push(newGroup);
+            } else {
+                newGroup.push(message);
+            }
+        });
+
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <MessagesListComponent messages={this.state.messages}/>
+                <ScrollView style={styles.scrollContainer}>
+                    {messageGroups.map((messageGroup, i) => {
+                        return (<UserMessengerComponent
+                            key={i}
+                            messages={messageGroup} 
+                            username={messageGroup[0].username}
+                            isMine={messageGroup[0].isMine}/>);
+                    })}
                 </ScrollView>
                 <View style={styles.senderContainer}>
                     <TextInput
@@ -94,9 +130,13 @@ class MessengerComponent extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         backgroundColor: '#000',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    scrollContainer: {
+        width: '100%',
     },
     messangeScrollView: {
         height: '80%'

@@ -1,5 +1,10 @@
 import constants from '../constants/constants';
 
+const getData = {
+    method: 'GET',
+    credentials: 'same-origin',
+    mode: 'same-origin'
+};
 const postData = {
     method: 'POST',
     credentials: 'same-origin',
@@ -9,7 +14,7 @@ const postData = {
 const apiService = {
     getMessagesFromMessenger: function(id) {
         const url = constants.API_URL + constants.MESSENGER_PATH + id;
-        return fetch(url);
+        return fetch(url, getData);
     },
 
     loginUser: function(username, password) {
