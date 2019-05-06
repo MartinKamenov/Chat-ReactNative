@@ -8,7 +8,11 @@ const getData = {
 const postData = {
     method: 'POST',
     credentials: 'same-origin',
-    mode: 'same-origin'
+    mode: 'same-origin',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
 };
 
 const apiService = {
@@ -32,7 +36,13 @@ const apiService = {
             return;
         }
 
-        const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}&imageUrl=${imageUrl}`;
+        const query = `?username=${username}&password=${password}&email=${email}&password_confirm=${password}`;
+        let body = {};
+        body = JSON.stringify({
+            imageUrl
+        });
+        postData.body = body;
+        
         const url = constants.API_URL + constants.REGISTER_PATH + query;
         return fetch(url, postData);
     }
