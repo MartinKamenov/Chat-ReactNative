@@ -6,6 +6,7 @@ const constants = {
     MESSENGER_PATH: '/messenger/',
     LOGIN_PATH: '/auth/login',
     REGISTER_PATH: '/auth/register',
+    USERS_PATH: '/auth/users',
     LOGIN_SUCCESS_MESSAGE: 'Successfull login',
     REGISTER_SUCCESS_MESSAGE: 'Successfull register',
     TOAST_DUARTION: 5000
