@@ -8,7 +8,7 @@ class ChatListComponent extends Component {
     }
 
     componentDidMount() {
-        apiService.getAllUsers()
+        apiService.getOtherUsers()
         .then((response) => {
             let jsonResponse = response.json();
             return jsonResponse;

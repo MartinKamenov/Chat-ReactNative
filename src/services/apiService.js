@@ -16,9 +16,9 @@ const postData = {
 };
 
 const apiService = {
-    getAllUsers: function() {
+    getOtherUsers: function() {
         const url = constants.API_URL + constants.USERS_PATH;
-        return fetch(url);
+        return fetch(url, getData);
     },
     getMessagesFromMessenger: function(id) {
         const url = constants.API_URL + constants.MESSENGER_PATH + id;
