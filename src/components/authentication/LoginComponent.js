@@ -35,7 +35,7 @@ class LoginComponent extends Component {
                     const resetAction = StackActions.reset({
                         index: 0,
                         actions: [
-                          NavigationActions.navigate({ routeName: 'MessengerComponent'})
+                          NavigationActions.navigate({ routeName: 'ChatListComponent'})
                         ] 
                     });
                     

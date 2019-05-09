@@ -40,10 +40,11 @@ class MessengerComponent extends Component {
         this.clearMessage();
     }
     componentDidMount() {
-        const id = 1;
-        this.fetchMessages(id)
+        const navigation = this.props.navigation;
+        const chatId = navigation.getParam('chatId', '1');
+        this.fetchMessages(chatId)
         
-        const connection = new WebSocket(constants.WS_URL + id);
+        const connection = new WebSocket(constants.WS_URL + chatId);
         this.setState({connection});
         this.showMessage(connection);
     }
