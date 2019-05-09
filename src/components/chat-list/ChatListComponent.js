@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import apiService from '../../services/apiService';
+import ChatDetailsComponent from './ChatDetailsComponent';
 
 class ChatListComponent extends Component {
+    static navigationOptions = () => {
+        return {
+            title: 'Messenger',
+            headerTitleStyle: {
+                color: '#ffffff'
+            },
+            headerStyle: {
+                backgroundColor: '#000000'
+            },
+            headerTintColor: '#ffffff'
+        };
+    };
     state = {
         chats: []
+    }
+
+    showChat = (chatId) => {
+        const { navigate } = this.props.navigation;
+        navigate('MessengerComponent', { chatId });
     }
 
     componentDidMount() {
@@ -21,15 +39,32 @@ class ChatListComponent extends Component {
     }
     render() { 
         return (
-            <View>
-                {
-                    this.state.chats.map((chat, i) => {
-                        return <Text key={i}>{chat.username}</Text>;
-                    })
-                }
+            <View style={styles.chatListContainer}>
+                <ScrollView>
+                    <View>
+                    {
+                        this.state.chats.map((chat, i) => {
+                            return (
+                                <ChatDetailsComponent 
+                                    user={chat} 
+                                    showChat={this.showChat} 
+                                    key={i}/>
+                            );
+                        })
+                    }
+                    </View>
+                </ScrollView>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    chatListContainer: {
+        backgroundColor: '#000000',
+        height: '100%',
+        width: '100%'
+    }
+});
  
 export default ChatListComponent;
