@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 const ChatDetailsComponent = ({ user, showChat }) => {
     return (
-        <View>
+        <View style={styles.chatDetailsContainer}>
             <TouchableHighlight onPress={() => showChat(user.chatId)}>
-                <View>
+                <View style={{flexDirection: 'row'}}>
                     <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
                     <Text style={styles.usernameText}>{user.username}</Text>
                 </View>
@@ -16,13 +16,19 @@ const ChatDetailsComponent = ({ user, showChat }) => {
 };
 
 const styles = StyleSheet.create({
+    chatDetailsContainer: {
+        marginBottom: 10
+    },
     profileImage: {
         width: 50,
         height: 50,
-        borderRadius: 10
+        borderRadius: 10,
     },
     usernameText: {
-        color: '#ffffff'
+        marginLeft: 20,
+        color: '#ffffff',
+        fontSize: 20,
+        height: 50
     }
 });
 
