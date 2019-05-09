@@ -10,10 +10,10 @@ class LoginComponent extends Component {
     static navigationOptions = {
         title: 'Login',
         headerTitleStyle: {
-            color: '#ffffff'
+            color: constants.SECONDARY_COLOR
         },
         headerStyle: {
-            backgroundColor: '#000000'
+            backgroundColor: constants.PRIMARY_COLOR
         }
     };
     state = {

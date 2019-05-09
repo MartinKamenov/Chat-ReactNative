@@ -3,7 +3,6 @@ import { View, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
-import MessagesListComponent from './MessagesListComponent';
 import UserMessengerComponent from './UserMessengerComponent';
 
 class MessengerComponent extends Component {
@@ -11,12 +10,12 @@ class MessengerComponent extends Component {
         return {
             title: 'Chat',
             headerTitleStyle: {
-                color: '#ffffff'
+                color: constants.SECONDARY_COLOR
             },
             headerStyle: {
-                backgroundColor: '#000000'
+                backgroundColor: constants.PRIMARY_COLOR
             },
-            headerTintColor: '#ffffff'
+            headerTintColor: constants.SECONDARY_COLOR
         };
     };
     state = {
@@ -150,8 +149,8 @@ const styles = StyleSheet.create({
     messageInput: {
         height: '50%',
         width: '100%',
-        backgroundColor: '#ffffff',
-        color: '#000000'
+        backgroundColor: constants.SECONDARY_COLOR,
+        color: constants.PRIMARY_COLOR
     },
     sendButton: {
         height: '50%',

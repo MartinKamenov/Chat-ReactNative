@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import constants from '../../constants/constants';
 
 const MessageComponent = ({ message }) => {
     if(message.isMine) {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     },
     myMessage: {
         alignSelf: 'flex-end',
-        color: '#FFFFFF',
+        color: constants.SECONDARY_COLOR,
         backgroundColor: '#0099FF'
     },
     anotherUserMessage: {

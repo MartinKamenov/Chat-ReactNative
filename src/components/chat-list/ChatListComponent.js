@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import apiService from '../../services/apiService';
 import ChatDetailsComponent from './ChatDetailsComponent';
+import constants from '../../constants/constants';
 
 class ChatListComponent extends Component {
     static navigationOptions = () => {
         return {
             title: 'Messenger',
             headerTitleStyle: {
-                color: '#ffffff'
+                color: constants.SECONDARY_COLOR
             },
             headerStyle: {
-                backgroundColor: '#000000'
+                backgroundColor: constants.PRIMARY_COLOR
             },
-            headerTintColor: '#ffffff'
+            headerTintColor: constants.SECONDARY_COLOR
         };
     };
     state = {
@@ -61,7 +62,7 @@ class ChatListComponent extends Component {
 
 const styles = StyleSheet.create({
     chatListContainer: {
-        backgroundColor: '#000000',
+        backgroundColor: constants.PRIMARY_COLOR,
         height: '100%',
         width: '100%'
     }

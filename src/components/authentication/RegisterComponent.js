@@ -10,10 +10,10 @@ class RegisterComponent extends Component {
     static navigationOptions = {
         title: 'Register',
         headerTitleStyle: {
-            color: '#ffffff'
+            color: constants.SECONDARY_COLOR
         },
         headerStyle: {
-            backgroundColor: '#000000'
+            backgroundColor: constants.PRIMARY_COLOR
         }
     };
     state = {

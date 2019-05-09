@@ -9,7 +9,9 @@ const constants = {
     USERS_PATH: '/auth/users',
     LOGIN_SUCCESS_MESSAGE: 'Successfull login',
     REGISTER_SUCCESS_MESSAGE: 'Successfull register',
-    TOAST_DUARTION: 5000
+    TOAST_DUARTION: 5000,
+    PRIMARY_COLOR: '#000000',
+    SECONDARY_COLOR: '#ffffff'
 };
 
 export default constants;
