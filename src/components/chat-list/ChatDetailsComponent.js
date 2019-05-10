@@ -1,14 +1,25 @@
 import React from 'react';
 import { View, Text, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import constants from '../../constants/constants';
 
 const ChatDetailsComponent = ({ user, showChat }) => {
+    let lastMessage = {};
+    if(typeof user.lastMessage === 'string') {
+        lastMessage.text = user.lastMessage;
+    } else {
+        lastMessage = user.lastMessage;
+    }
+
     return (
         <View style={styles.chatDetailsContainer}>
             <TouchableHighlight onPress={() => showChat(user.chatId)}>
                 <View style={styles.chatDetailsRow}>
                     <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
-                    <Text style={styles.usernameText}>{user.username}</Text>
+                    <View>
+                        <Text style={styles.usernameText}>{user.username}</Text>
+                        <Text style={styles.chatText}>{lastMessage.text}</Text>
+                    </View>
                 </View>
             </TouchableHighlight>
         </View>
@@ -20,18 +31,26 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     chatDetailsRow: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        height: 70
     },
     profileImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 10,
+        width: 70,
+        height: 70,
+        borderRadius: 15,
     },
     usernameText: {
         marginLeft: 20,
-        color: '#ffffff',
+        color: constants.SECONDARY_COLOR,
         fontSize: 20,
-        height: 50
+        fontWeight: 'bold',
+        height: 35
+    },
+    chatText: {
+        marginLeft: 20,
+        fontSize: 15,
+        height: 35,
+        color: constants.SECONDARY_COLOR
     }
 });
 
@@ -39,7 +58,12 @@ ChatDetailsComponent.propTypes = {
     user: PropTypes.shape({
         username: PropTypes.string.isRequired,
         imageUrl: PropTypes.string,
-        chatId: PropTypes.string.isRequired
+        chatId: PropTypes.string.isRequired,
+        lastMessage: PropTypes.shape({
+            username: PropTypes.string,
+            text: PropTypes.string.isRequired,
+            dateCreated: PropTypes.string
+        })
     }).isRequired,
     showChat: PropTypes.func.isRequired
 };

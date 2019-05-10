@@ -10,7 +10,7 @@ const constants = {
     LOGIN_SUCCESS_MESSAGE: 'Successfull login',
     REGISTER_SUCCESS_MESSAGE: 'Successfull register',
     TOAST_DUARTION: 5000,
-    PRIMARY_COLOR: '#000000',
+    PRIMARY_COLOR: '#99004D',
     SECONDARY_COLOR: '#ffffff'
 };
 
