@@ -70,7 +70,8 @@ class LoginComponent extends Component {
                     <TextInput 
                         placeholder='Username' 
                         onChangeText={(text) => this.changeStateValue('username', text)}/>
-                    <TextInput 
+                    <TextInput
+                        secureTextEntry={true}
                         placeholder='Password' 
                         onChangeText={(text) => this.changeStateValue('password', text)}/>
                     <Button title='Login' onPress={this.sendLoginRequest}/>

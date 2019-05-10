@@ -6,7 +6,7 @@ const ChatDetailsComponent = ({ user, showChat }) => {
     return (
         <View style={styles.chatDetailsContainer}>
             <TouchableHighlight onPress={() => showChat(user.chatId)}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={styles.chatDetailsRow}>
                     <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
                     <Text style={styles.usernameText}>{user.username}</Text>
                 </View>
@@ -18,6 +18,9 @@ const ChatDetailsComponent = ({ user, showChat }) => {
 const styles = StyleSheet.create({
     chatDetailsContainer: {
         marginBottom: 10
+    },
+    chatDetailsRow: {
+        flexDirection: 'row'
     },
     profileImage: {
         width: 50,

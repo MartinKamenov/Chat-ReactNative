@@ -80,11 +80,13 @@ class RegisterComponent extends Component {
                     <TextInput 
                         placeholder='Email' 
                         onChangeText={(text) => this.changeStateValue('email', text)}/>
-                    <TextInput 
-                        placeholder='Password' 
+                    <TextInput
+                        placeholder='Password'
+                        secureTextEntry={true} 
                         onChangeText={(text) => this.changeStateValue('password', text)}/>
                     <TextInput 
-                        placeholder='Password confirm' 
+                        placeholder='Password confirm'
+                        secureTextEntry={true}
                         onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
                     <TextInput 
                         placeholder='Profile image url' 

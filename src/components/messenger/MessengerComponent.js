@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Button, TextInput, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
@@ -101,7 +101,7 @@ class MessengerComponent extends Component {
         });
 
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior='padding'>
                 <ScrollView style={styles.scrollContainer}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
@@ -123,7 +123,8 @@ class MessengerComponent extends Component {
                         title='Send'
                         onPress={this.sendMessage}/>
                 </View>
-            </View>
+                <View style={{ height: 0 }} />
+            </KeyboardAvoidingView>
         );
     }
 }
