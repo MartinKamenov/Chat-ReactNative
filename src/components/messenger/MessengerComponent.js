@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Button, TextInput, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { 
+    Platform,
+    View,
+    Button,
+    TextInput,
+    ScrollView,
+    KeyboardAvoidingView,
+    StyleSheet
+} from 'react-native';
 import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
@@ -101,7 +109,14 @@ class MessengerComponent extends Component {
         });
 
         return (
-            <KeyboardAvoidingView style={styles.container} behavior='padding'>
+            <KeyboardAvoidingView style={styles.container}
+                behavior='padding'
+                keyboardVerticalOffset={
+                    Platform.select({
+                        ios: () => 0,
+                        android: () => 80
+                    })()
+                }>
                 <ScrollView style={styles.scrollContainer}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
@@ -123,7 +138,6 @@ class MessengerComponent extends Component {
                         title='Send'
                         onPress={this.sendMessage}/>
                 </View>
-                <View style={{ height: 0 }} />
             </KeyboardAvoidingView>
         );
     }
@@ -141,21 +155,22 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     messangeScrollView: {
-        height: '80%'
+        flex: 1,
     },
     senderContainer: {
+        flexDirection: 'row',
         width: '100%',
-        height: '20%'
+        height: 50
     },
     messageInput: {
-        height: '50%',
-        width: '100%',
+        flex: 1,
         backgroundColor: constants.SECONDARY_COLOR,
         color: constants.PRIMARY_COLOR
     },
     sendButton: {
-        height: '50%',
-        width: '100%'
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        width: 50
     }
 });
 

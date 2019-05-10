@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         width: '40%',
         padding: 10,
-        marginTop: 10,
+        marginTop: 5,
+        marginBottom: 5,
         textAlign: 'center'
     },
     myMessage: {
