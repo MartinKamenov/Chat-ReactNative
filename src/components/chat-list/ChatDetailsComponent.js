@@ -3,28 +3,19 @@ import { View, Text, Image, TouchableHighlight, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types';
 import constants from '../../constants/constants';
 
-const ChatDetailsComponent = ({ user, showChat }) => {
-    let lastMessage = {};
-    if(typeof user.lastMessage === 'string') {
-        lastMessage.text = user.lastMessage;
-    } else {
-        lastMessage = user.lastMessage;
-    }
-
-    return (
-        <View style={styles.chatDetailsContainer}>
-            <TouchableHighlight onPress={() => showChat(user.chatId)}>
-                <View style={styles.chatDetailsRow}>
-                    <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
-                    <View>
-                        <Text style={styles.usernameText}>{user.username}</Text>
-                        <Text style={styles.chatText}>{lastMessage.text}</Text>
-                    </View>
+const ChatDetailsComponent = ({ user, showChat }) => (
+    <View style={styles.chatDetailsContainer}>
+        <TouchableHighlight onPress={() => showChat(user.chatId)}>
+            <View style={styles.chatDetailsRow}>
+                <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
+                <View>
+                    <Text style={styles.usernameText}>{user.username}</Text>
+                    <Text style={styles.chatText}>{user.lastMessage.text}</Text>
                 </View>
-            </TouchableHighlight>
-        </View>
-    );
-};
+            </View>
+        </TouchableHighlight>
+    </View>
+);
 
 const styles = StyleSheet.create({
     chatDetailsContainer: {
