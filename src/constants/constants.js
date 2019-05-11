@@ -11,7 +11,8 @@ const constants = {
     REGISTER_SUCCESS_MESSAGE: 'Successfull register',
     TOAST_DUARTION: 5000,
     PRIMARY_COLOR: '#31AF91',
-    SECONDARY_COLOR: '#ffffff'
+    SECONDARY_COLOR: '#ffffff',
+    DARKER_PRIMARY_COLOR: '#288770'
 };
 
 export default constants;

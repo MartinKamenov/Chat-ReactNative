@@ -26,11 +26,17 @@ const ChatDetailsComponent = ({ user, showChat }) => (
 
 const styles = StyleSheet.create({
     chatDetailsContainer: {
-        marginBottom: 10
+        marginBottom: 5,
+        marginTop: 5
     },
     chatDetailsRow: {
         flexDirection: 'row',
-        height: 70
+        height: 90,
+        marginLeft: 5,
+        marginRight: 5,
+        backgroundColor: constants.DARKER_PRIMARY_COLOR,
+        borderRadius: 10,
+        padding: 10
     },
     profileImage: {
         width: 70,
