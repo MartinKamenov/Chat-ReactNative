@@ -86,6 +86,11 @@ class MessengerComponent extends Component {
     clearMessage() {
         this.setState({ newMessage: '' });
     }
+
+    scrollViewToBottom = () => {
+        this.scrollView.scrollToEnd({animated: true});
+    }
+
     render() {
         let messages = this.state.messages;
         let messageGroups = [];
@@ -117,7 +122,9 @@ class MessengerComponent extends Component {
                         android: () => 80
                     })()
                 }>
-                <ScrollView style={styles.scrollContainer}>
+                <ScrollView style={styles.scrollContainer}
+                    ref={ref => this.scrollView = ref}
+                    onContentSizeChange={this.scrollViewToBottom}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
                             key={i}

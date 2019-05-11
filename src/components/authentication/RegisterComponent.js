@@ -74,26 +74,30 @@ class RegisterComponent extends Component {
         if(!this.state.isLoading) {
             return (
                 <View>
-                    <Image style={styles.appIcon} source={require('../../../assets/icon.png')}/>
-                    <TextInput 
-                        placeholder='Username' 
-                        onChangeText={(text) => this.changeStateValue('username', text)}/>
-                    <TextInput 
-                        placeholder='Email' 
-                        onChangeText={(text) => this.changeStateValue('email', text)}/>
-                    <TextInput
-                        placeholder='Password'
-                        secureTextEntry={true} 
-                        onChangeText={(text) => this.changeStateValue('password', text)}/>
-                    <TextInput 
-                        placeholder='Password confirm'
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
-                    <TextInput 
-                        placeholder='Profile image url' 
-                        onChangeText={(text) => this.changeStateValue('imageUrl', text)}/>
-                    <Button title='Register' onPress={this.sendRegisterRequest}/>
-                    <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
+                    <View style={styles.container}>
+                        <Image style={styles.appIcon} source={require('../../../assets/icon.png')}/>
+                        <TextInput 
+                            placeholder='Username' 
+                            onChangeText={(text) => this.changeStateValue('username', text)}/>
+                        <TextInput 
+                            placeholder='Email' 
+                            onChangeText={(text) => this.changeStateValue('email', text)}/>
+                        <TextInput
+                            placeholder='Password'
+                            secureTextEntry={true} 
+                            onChangeText={(text) => this.changeStateValue('password', text)}/>
+                        <TextInput 
+                            placeholder='Password confirm'
+                            secureTextEntry={true}
+                            onChangeText={(text) => this.changeStateValue('passwordRepeat', text)}/>
+                        <TextInput 
+                            placeholder='Profile image url' 
+                            onChangeText={(text) => this.changeStateValue('imageUrl', text)}/>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Button title='Register' onPress={this.sendRegisterRequest}/>
+                        <Button title='Go to Login' onPress={this.navigateToLoginComponent}/>
+                    </View>
                 </View>
             );
         }
@@ -105,9 +109,24 @@ class RegisterComponent extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'stretch',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     appIcon: {
-        margin: 'auto',
-        width: '50%'
+        width: '50%',
+        aspectRatio: 1
+    },
+    input: {
+        width: '50%',
+        fontSize: 16
+    },
+    buttonContainer: {
+        width: '70%',
+        marginLeft: '15%',
+        marginRight: '15%'
     }
 });
 
