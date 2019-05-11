@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button, StyleSheet, ToastAndroid } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ToastAndroid, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
@@ -74,6 +74,7 @@ class RegisterComponent extends Component {
         if(!this.state.isLoading) {
             return (
                 <View>
+                    <Image style={styles.appIcon} source={require('../../../assets/icon.png')}/>
                     <TextInput 
                         placeholder='Username' 
                         onChangeText={(text) => this.changeStateValue('username', text)}/>
@@ -102,6 +103,13 @@ class RegisterComponent extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    appIcon: {
+        margin: 'auto',
+        width: '50%'
+    }
+});
 
 RegisterComponent.propTypes = {
     navigation: PropTypes.object.isRequired

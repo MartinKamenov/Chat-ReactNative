@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     myMessage: {
         alignSelf: 'flex-end',
         color: constants.SECONDARY_COLOR,
-        backgroundColor: '#0099FF'
+        backgroundColor: constants.PRIMARY_COLOR
     },
     anotherUserMessage: {
         alignSelf: 'flex-start',

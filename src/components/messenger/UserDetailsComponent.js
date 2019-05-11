@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import PropTypes from 'prop-types';
+import constants from '../../constants/constants';
 
 const UserDetailsComponent = ({username, isMine, imageUrl}) => {
     if(isMine) {
@@ -39,14 +40,16 @@ const styles = StyleSheet.create({
     },
     myUsername: {
         alignSelf: 'flex-end',
-        color: '#0099FF'
+        color: constants.PRIMARY_COLOR
     },
     otherUserUsername: {
         alignSelf: 'flex-start',
-        color: '#F1F0F0'
+        color: constants.SECONDARY_COLOR
     },
     profileImage: {
-        width: '40%',
+        width: '20%',
+        marginLeft: '10%',
+        marginRight: '10%',
         aspectRatio: 1,
         marginTop: 10,
         borderRadius: 10

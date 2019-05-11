@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button, StyleSheet, ToastAndroid } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ToastAndroid, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
@@ -67,15 +67,26 @@ class LoginComponent extends Component {
         if(!this.state.isLoading) {
             return (
                 <View>
-                    <TextInput 
-                        placeholder='Username' 
-                        onChangeText={(text) => this.changeStateValue('username', text)}/>
-                    <TextInput
-                        secureTextEntry={true}
-                        placeholder='Password' 
-                        onChangeText={(text) => this.changeStateValue('password', text)}/>
-                    <Button title='Login' onPress={this.sendLoginRequest}/>
-                    <Button title='Go to Sign up' onPress={this.navigateToRegisterComponent}/>
+                    <View style={styles.container}>
+                        <Image style={styles.appIcon} source={require('../../../assets/icon.png')}/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Username' 
+                            onChangeText={(text) => this.changeStateValue('username', text)}/>
+                        <TextInput
+                            style={styles.input}
+                            secureTextEntry={true}
+                            placeholder='Password' 
+                            onChangeText={(text) => this.changeStateValue('password', text)}/>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            title='Login'
+                            onPress={this.sendLoginRequest}/>
+                        <Button
+                            title='Go to Sign up'
+                            onPress={this.navigateToRegisterComponent}/>
+                    </View>
                 </View>
             );
         }
@@ -85,6 +96,28 @@ class LoginComponent extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'stretch',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    appIcon: {
+        width: '50%',
+        aspectRatio: 1
+    },
+    input: {
+        width: '50%',
+        fontSize: 16
+    },
+    buttonContainer: {
+        width: '70%',
+        marginLeft: '15%',
+        marginRight: '15%'
+    }
+});
 
 LoginComponent.propTypes = {
     navigation: PropTypes.object.isRequired

@@ -10,7 +10,14 @@ const ChatDetailsComponent = ({ user, showChat }) => (
                 <Image style={styles.profileImage} source={{uri: user.imageUrl}}/>
                 <View>
                     <Text style={styles.usernameText}>{user.username}</Text>
-                    <Text style={styles.chatText}>{user.lastMessage.text}</Text>
+                    <View style={styles.lastMessageRow}>
+                        <Text style={styles.lastMessageUsername}>
+                            {user.lastMessage.username.substring(0, 20)}:
+                        </Text>
+                        <Text style={styles.chatText}>
+                            {user.lastMessage.text.substring(0, 20)}
+                        </Text>
+                    </View>
                 </View>
             </View>
         </TouchableHighlight>
@@ -37,8 +44,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         height: 35
     },
-    chatText: {
+    lastMessageRow: {
+        flexDirection: 'row'
+    },
+    lastMessageUsername: {
         marginLeft: 20,
+        fontSize: 15,
+        height: 35,
+        color: constants.SECONDARY_COLOR
+    },
+    chatText: {
+        marginLeft: 5,
         fontSize: 15,
         height: 35,
         color: constants.SECONDARY_COLOR
