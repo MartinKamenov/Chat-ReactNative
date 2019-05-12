@@ -91,6 +91,13 @@ class MessengerComponent extends Component {
         this.scrollView.scrollToEnd({animated: true});
     }
 
+    handleScrollMessenger = (event) => {
+        const offset = event.nativeEvent.contentOffset.y;
+        if(offset <= constants.OFFSET_INFINITE_SCROLL) {
+            
+        }
+    }
+
     render() {
         let messages = this.state.messages;
         let messageGroups = [];
@@ -122,9 +129,11 @@ class MessengerComponent extends Component {
                         android: () => 80
                     })()
                 }>
-                <ScrollView style={styles.scrollContainer}
+                <ScrollView
+                    style={styles.scrollContainer}
                     ref={ref => this.scrollView = ref}
-                    onContentSizeChange={this.scrollViewToBottom}>
+                    onContentSizeChange={this.scrollViewToBottom}
+                    onScroll={this.handleScrollMessenger}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
                             key={i}
