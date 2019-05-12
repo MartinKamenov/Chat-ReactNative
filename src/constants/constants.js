@@ -13,7 +13,7 @@ const constants = {
     PRIMARY_COLOR: '#31AF91',
     SECONDARY_COLOR: '#ffffff',
     DARKER_PRIMARY_COLOR: '#288770',
-    OFFSET_INFINITE_SCROLL: 80
+    OFFSET_INFINITE_SCROLL: 30
 };
 
 export default constants;

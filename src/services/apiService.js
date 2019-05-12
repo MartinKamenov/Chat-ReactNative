@@ -20,8 +20,9 @@ const apiService = {
         const url = constants.API_URL + constants.USERS_PATH;
         return fetch(url, getData);
     },
-    getMessagesFromMessenger: function(id) {
-        const url = constants.API_URL + constants.MESSENGER_PATH + id;
+    getMessagesFromMessenger: function(id, page) {
+        const query = `?page=${page}`;
+        const url = constants.API_URL + constants.MESSENGER_PATH + id + query;
         return fetch(url, getData);
     },
 

@@ -30,7 +30,10 @@ class MessengerComponent extends Component {
         messages: [],
         recievedMessage : '',
         newMessage: '',
-        connection: {}
+        connection: {},
+        page: 1,
+        chatId: 1,
+        pagesCount: 1
     }
 
     changeMessage = (text) => {
@@ -49,21 +52,26 @@ class MessengerComponent extends Component {
     componentDidMount() {
         const navigation = this.props.navigation;
         const chatId = navigation.getParam('chatId', '1');
-        this.fetchMessages(chatId)
+        this.fetchMessages(chatId, this.state.page);
         
         const connection = new WebSocket(constants.WS_URL + chatId);
-        this.setState({connection});
+        this.setState({connection, chatId});
         this.showMessage(connection);
     }
 
-    fetchMessages(id) {
-        apiService.getMessagesFromMessenger(id)
+    fetchMessages(id, page) {
+        apiService.getMessagesFromMessenger(id, page)
             .then((response) => {
                 let jsonResponse = response.json();
                 return jsonResponse;
             })
-            .then((messages) => {
-                this.setState({ messages });
+            .then((messageObject) => {
+                const newMessages = messageObject.messages;
+                const messages = newMessages.concat(this.state.messages);
+
+                const page = messageObject.page;
+                const pagesCount = messageObject.pagesCount;
+                this.setState({ messages, page, pagesCount });
             })
             .catch((error) => {
                 console.error(error);
@@ -94,7 +102,11 @@ class MessengerComponent extends Component {
     handleScrollMessenger = (event) => {
         const offset = event.nativeEvent.contentOffset.y;
         if(offset <= constants.OFFSET_INFINITE_SCROLL) {
-            
+            let page = this.state.page;
+            const chatId = this.state.chatId;
+            if(this.state.pagesCount >= page + 1) {
+                this.fetchMessages(chatId, page + 1);
+            }
         }
     }
 
