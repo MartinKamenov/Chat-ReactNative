@@ -33,7 +33,8 @@ class MessengerComponent extends Component {
         connection: {},
         page: 1,
         chatId: 1,
-        pagesCount: 1
+        pagesCount: 1,
+        scrollOffset: 0
     }
 
     changeMessage = (text) => {
@@ -96,18 +97,20 @@ class MessengerComponent extends Component {
     }
 
     scrollViewToBottom = () => {
-        this.scrollView.scrollToEnd({animated: true});
+        this.scrollView.scrollToEnd({ animated: true });
     }
 
     handleScrollMessenger = (event) => {
         const offset = event.nativeEvent.contentOffset.y;
-        if(offset <= constants.OFFSET_INFINITE_SCROLL) {
+        if(offset <= constants.OFFSET_INFINITE_SCROLL && offset < this.state.scrollOffset) {
             let page = this.state.page;
             const chatId = this.state.chatId;
             if(this.state.pagesCount >= page + 1) {
                 this.fetchMessages(chatId, page + 1);
             }
         }
+
+        this.setState({scrollOffset: offset});
     }
 
     render() {
@@ -158,7 +161,7 @@ class MessengerComponent extends Component {
                 <View style={styles.senderContainer}>
                     <TextInput
                         style={styles.messageInput}
-                        value={this.state.newMessage} 
+                        value={this.state.newMessage}
                         placeholder='Text'
                         onChangeText={(text) => this.changeMessage(text)}/>
                     <Button
