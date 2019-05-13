@@ -102,10 +102,13 @@ class MessengerComponent extends Component {
 
     handleScrollMessenger = (event) => {
         const offset = event.nativeEvent.contentOffset.y;
-        if(offset <= constants.OFFSET_INFINITE_SCROLL && offset < this.state.scrollOffset) {
+
+        if(offset <= constants.OFFSET_INFINITE_SCROLL &&
+                offset < this.state.scrollOffset) {
             let page = this.state.page;
             const chatId = this.state.chatId;
             if(this.state.pagesCount >= page + 1) {
+                this.setState({ page: page + 1 });
                 this.fetchMessages(chatId, page + 1);
             }
         }
