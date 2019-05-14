@@ -5,6 +5,10 @@ const dateService = {
     formatDate: function(dateString) {
         const date = new Date(dateString);
         return `${date.getDate()}.${monthsShort[date.getMonth()]}.${date.getFullYear()}`;
+    },
+    formatTime: function(dateString) {
+        const date = new Date(dateString);
+        return `${date.getHours()}:${date.getMinutes()}`;
     }
 };
 

@@ -16,9 +16,14 @@ const MessageComponent = ({ message, showDateForMessage, visibleDateMessageId })
                 {(() => {
                     if(visibleDateMessageId === message.id) {
                         return (
-                            <Text style={[styles.dateText, styles.myDateText]}>
-                                {dateService.formatDate(message.dateCreated)}
-                            </Text>
+                            <View>
+                                <Text style={[styles.dateText, styles.myDateText]}>
+                                    {dateService.formatTime(message.dateCreated)}
+                                </Text>
+                                <Text style={[styles.dateText, styles.myDateText]}>
+                                    {dateService.formatDate(message.dateCreated)}
+                                </Text>
+                            </View>
                         );
                     }
                 })()}
@@ -36,9 +41,14 @@ const MessageComponent = ({ message, showDateForMessage, visibleDateMessageId })
             {(() => {
                 if(visibleDateMessageId === message.id) {
                     return (
-                        <Text style={[styles.dateText, styles.anotherUserDateText]}>
-                            {dateService.formatDate(message.dateCreated)}
-                        </Text>
+                        <View>
+                            <Text style={[styles.dateText, styles.anotherUserDateText]}>
+                                {dateService.formatTime(message.dateCreated)}
+                            </Text>
+                            <Text style={[styles.dateText, styles.anotherUserDateText]}>
+                                {dateService.formatDate(message.dateCreated)}
+                            </Text>
+                        </View>
                     );
                 }
             })()}
