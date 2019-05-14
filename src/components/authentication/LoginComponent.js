@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button, StyleSheet, ToastAndroid, Image } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ToastAndroid, Image, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import apiService from '../../services/apiService';
 import constants from '../../constants/constants';
@@ -22,6 +22,10 @@ class LoginComponent extends Component {
         isLoading: false
     }
 
+    componentDidMount() {
+        this._retrieveData();
+    }
+
     sendLoginRequest = () => {
         const username = this.state.username;
         const password = this.state.password;
@@ -32,14 +36,17 @@ class LoginComponent extends Component {
                 ToastAndroid.show(message, constants.TOAST_DUARTION);
                 this.setState({ isLoading: false });
                 if(message === constants.LOGIN_SUCCESS_MESSAGE) {
-                    const resetAction = StackActions.reset({
-                        index: 0,
-                        actions: [
-                          NavigationActions.navigate({ routeName: 'ChatListComponent'})
-                        ] 
-                    });
-                    
-                    this.props.navigation.dispatch(resetAction);
+                    this._storeData()
+                        .then(() => {
+                            const resetAction = StackActions.reset({
+                                index: 0,
+                                actions: [
+                                NavigationActions.navigate({ routeName: 'ChatListComponent'})
+                                ] 
+                            });
+                            
+                            this.props.navigation.dispatch(resetAction);
+                        });
                 }
             }).catch((e) => {
                 ToastAndroid.show(e.message, constants.TOAST_DUARTION);
@@ -63,6 +70,33 @@ class LoginComponent extends Component {
 
         this.props.navigation.dispatch(resetAction);
     }
+
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('username', this.state.username);
+            await AsyncStorage.setItem('password', this.state.password);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    _retrieveData = async () => {
+        try {
+            const username = await AsyncStorage.getItem('username');
+            const password = await AsyncStorage.getItem('password');
+            if (!username || !password) {
+                return;
+            }
+
+            this.setState({ username, password }, () => {
+                //this.sendLoginRequest();
+            });
+
+        } catch (error) {
+          // Error retrieving data
+        }
+    }
+
     render() {
         if(!this.state.isLoading) {
             return (
@@ -70,10 +104,12 @@ class LoginComponent extends Component {
                     <View style={styles.container}>
                         <Image style={styles.appIcon} source={require('../../../assets/icon.png')}/>
                         <TextInput
+                            value={this.state.username}
                             style={styles.input}
                             placeholder='Username' 
                             onChangeText={(text) => this.changeStateValue('username', text)}/>
                         <TextInput
+                            value={this.state.password}
                             style={styles.input}
                             secureTextEntry={true}
                             placeholder='Password' 
