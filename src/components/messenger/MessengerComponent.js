@@ -12,6 +12,7 @@ import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
 import UserMessengerComponent from './UserMessengerComponent';
+import LoadingComponent from '../loading/LoadingComponent';
 
 class MessengerComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -30,7 +31,13 @@ class MessengerComponent extends Component {
         messages: [],
         recievedMessage : '',
         newMessage: '',
-        connection: {}
+        connection: {},
+        isLoading: true,
+        isInitialFetch: true,
+        page: 1,
+        chatId: 1,
+        pagesCount: 1,
+        scrollOffset: 0
     }
 
     changeMessage = (text) => {
@@ -49,23 +56,37 @@ class MessengerComponent extends Component {
     componentDidMount() {
         const navigation = this.props.navigation;
         const chatId = navigation.getParam('chatId', '1');
-        this.fetchMessages(chatId)
+        this.fetchMessages(chatId, this.state.page);
         
         const connection = new WebSocket(constants.WS_URL + chatId);
-        this.setState({connection});
+        this.setState({connection, chatId});
         this.showMessage(connection);
     }
 
-    fetchMessages(id) {
-        apiService.getMessagesFromMessenger(id)
+    fetchMessages(id, page) {
+        this.setState({ isLoading: true });
+        apiService.getMessagesFromMessenger(id, page)
             .then((response) => {
                 let jsonResponse = response.json();
                 return jsonResponse;
             })
-            .then((messages) => {
-                this.setState({ messages });
+            .then((messageObject) => {
+                const newMessages = messageObject.messages;
+                const messages = newMessages.concat(this.state.messages);
+
+                const page = messageObject.page;
+                const pagesCount = messageObject.pagesCount;
+                this.setState({ messages, page, pagesCount, isLoading: false }, 
+                    () => {
+                        if(this.state.isInitialFetch) {
+                            setTimeout(this.scrollViewToBottom);
+                            this.setState({ isInitialFetch: false });
+                        }
+                    }
+                );
             })
             .catch((error) => {
+                this.setState({ isLoading: false });
                 console.error(error);
             });
     }
@@ -79,6 +100,8 @@ class MessengerComponent extends Component {
             this.setState({
                 messages,
                 recievedMessage: message
+            }, () => {
+                setTimeout(this.scrollViewToBottom);
             });
         };
     }
@@ -88,7 +111,23 @@ class MessengerComponent extends Component {
     }
 
     scrollViewToBottom = () => {
-        this.scrollView.scrollToEnd({animated: true});
+        this.scrollView.scrollToEnd({ animated: true });
+    }
+
+    handleScrollMessenger = (event) => {
+        const offset = event.nativeEvent.contentOffset.y;
+
+        if(offset <= constants.OFFSET_INFINITE_SCROLL &&
+                offset < this.state.scrollOffset) {
+            let page = this.state.page;
+            const chatId = this.state.chatId;
+            if(this.state.pagesCount >= page + 1) {
+                this.setState({ page: page + 1 });
+                this.fetchMessages(chatId, page + 1);
+            }
+        }
+
+        this.setState({scrollOffset: offset});
     }
 
     render() {
@@ -122,9 +161,15 @@ class MessengerComponent extends Component {
                         android: () => 80
                     })()
                 }>
-                <ScrollView style={styles.scrollContainer}
+                {(() => {
+                    if(this.state.isLoading) {
+                        return <LoadingComponent loadingText='Fetching older messages'/>;
+                    }
+                })()}
+                <ScrollView
+                    style={styles.scrollContainer}
                     ref={ref => this.scrollView = ref}
-                    onContentSizeChange={this.scrollViewToBottom}>
+                    onScroll={this.handleScrollMessenger}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
                             key={i}
@@ -137,7 +182,7 @@ class MessengerComponent extends Component {
                 <View style={styles.senderContainer}>
                     <TextInput
                         style={styles.messageInput}
-                        value={this.state.newMessage} 
+                        value={this.state.newMessage}
                         placeholder='Text'
                         onChangeText={(text) => this.changeMessage(text)}/>
                     <Button
