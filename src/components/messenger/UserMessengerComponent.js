@@ -4,11 +4,20 @@ import PropTypes from 'prop-types';
 import UserDetailsComponent from './UserDetailsComponent';
 import MessagesListComponent from './MessagesListComponent';
 
-const UserMessengerComponent = ({ username, isMine, messages, imageUrl }) => {
+const UserMessengerComponent = ({
+        username,
+        isMine,
+        messages,
+        imageUrl,
+        visibleDateMessageId,
+        showDateForMessage}) => {
     return (
         <View style={styles.userMessengerContainer}>
             <UserDetailsComponent username={username} isMine={isMine} imageUrl={imageUrl}/>
-            <MessagesListComponent messages={messages}/>
+            <MessagesListComponent
+                visibleDateMessageId={visibleDateMessageId}
+                showDateForMessage={showDateForMessage}
+                messages={messages}/>
         </View>
     );
 };
@@ -23,7 +32,9 @@ UserMessengerComponent.propTypes = {
     username: PropTypes.string.isRequired,
     isMine: PropTypes.bool.isRequired,
     messages: PropTypes.array.isRequired,
-    imageUrl: PropTypes.string
+    imageUrl: PropTypes.string,
+    showDateForMessage: PropTypes.func.isRequired,
+    visibleDateMessageId: PropTypes.string.isRequired
 };
  
 export default UserMessengerComponent;
