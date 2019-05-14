@@ -12,6 +12,7 @@ import constants from '../../constants/constants';
 import apiService from '../../services/apiService';
 import PropTypes from 'prop-types';
 import UserMessengerComponent from './UserMessengerComponent';
+import LoadingComponent from '../loading/LoadingComponent';
 
 class MessengerComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,6 +32,8 @@ class MessengerComponent extends Component {
         recievedMessage : '',
         newMessage: '',
         connection: {},
+        isLoading: true,
+        isInitialFetch: true,
         page: 1,
         chatId: 1,
         pagesCount: 1,
@@ -61,6 +64,7 @@ class MessengerComponent extends Component {
     }
 
     fetchMessages(id, page) {
+        this.setState({ isLoading: true });
         apiService.getMessagesFromMessenger(id, page)
             .then((response) => {
                 let jsonResponse = response.json();
@@ -72,9 +76,17 @@ class MessengerComponent extends Component {
 
                 const page = messageObject.page;
                 const pagesCount = messageObject.pagesCount;
-                this.setState({ messages, page, pagesCount });
+                this.setState({ messages, page, pagesCount, isLoading: false }, 
+                    () => {
+                        if(this.state.isInitialFetch) {
+                            setTimeout(this.scrollViewToBottom);
+                            this.setState({ isInitialFetch: false });
+                        }
+                    }
+                );
             })
             .catch((error) => {
+                this.setState({ isLoading: false });
                 console.error(error);
             });
     }
@@ -88,6 +100,8 @@ class MessengerComponent extends Component {
             this.setState({
                 messages,
                 recievedMessage: message
+            }, () => {
+                setTimeout(this.scrollViewToBottom);
             });
         };
     }
@@ -147,10 +161,14 @@ class MessengerComponent extends Component {
                         android: () => 80
                     })()
                 }>
+                {(() => {
+                    if(this.state.isLoading) {
+                        return <LoadingComponent loadingText='Fetching older messages'/>;
+                    }
+                })()}
                 <ScrollView
                     style={styles.scrollContainer}
                     ref={ref => this.scrollView = ref}
-                    onContentSizeChange={this.scrollViewToBottom}
                     onScroll={this.handleScrollMessenger}>
                     {messageGroups.map((messageGroup, i) => {
                         return (<UserMessengerComponent
