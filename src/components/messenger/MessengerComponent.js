@@ -34,9 +34,9 @@ class MessengerComponent extends Component {
         connection: {},
         isLoading: true,
         isInitialFetch: true,
-        page: 1,
+        lastMessageId: '1',
         chatId: 1,
-        pagesCount: 1,
+        isLastMessagePage: false,
         scrollOffset: 0,
         visibleDateMessageId: ''
     }
@@ -57,16 +57,16 @@ class MessengerComponent extends Component {
     componentDidMount() {
         const navigation = this.props.navigation;
         const chatId = navigation.getParam('chatId', '1');
-        this.fetchMessages(chatId, this.state.page);
+        this.fetchMessages(chatId, this.state.lastMessageId);
         
         const connection = new WebSocket(constants.WS_URL + chatId);
         this.setState({connection, chatId});
         this.showMessage(connection);
     }
 
-    fetchMessages(id, page) {
+    fetchMessages(id, lastMessageId) {
         this.setState({ isLoading: true });
-        apiService.getMessagesFromMessenger(id, page)
+        apiService.getMessagesFromMessenger(id, lastMessageId)
             .then((response) => {
                 let jsonResponse = response.json();
                 return jsonResponse;
@@ -75,9 +75,9 @@ class MessengerComponent extends Component {
                 const newMessages = messageObject.messages;
                 const messages = newMessages.concat(this.state.messages);
 
-                const page = messageObject.page;
-                const pagesCount = messageObject.pagesCount;
-                this.setState({ messages, page, pagesCount, isLoading: false }, 
+                const lastMessageId = messageObject.lastMessageId;
+                const isLastMessagePage = messageObject.isLastMessagePage;
+                this.setState({ messages, lastMessageId, isLastMessagePage, isLoading: false },
                     () => {
                         if(this.state.isInitialFetch) {
                             setTimeout(this.scrollViewToBottom);
@@ -119,13 +119,9 @@ class MessengerComponent extends Component {
         const offset = event.nativeEvent.contentOffset.y;
 
         if(offset <= constants.OFFSET_INFINITE_SCROLL &&
-                offset < this.state.scrollOffset) {
-            let page = this.state.page;
+                offset < this.state.scrollOffset && !this.state.isLastMessagePage) {
             const chatId = this.state.chatId;
-            if(this.state.pagesCount >= page + 1) {
-                this.setState({ page: page + 1 });
-                this.fetchMessages(chatId, page + 1);
-            }
+            this.fetchMessages(chatId, this.state.lastMessageId);
         }
 
         this.setState({scrollOffset: offset});
