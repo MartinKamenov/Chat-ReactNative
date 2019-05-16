@@ -37,7 +37,8 @@ class MessengerComponent extends Component {
         page: 1,
         chatId: 1,
         pagesCount: 1,
-        scrollOffset: 0
+        scrollOffset: 0,
+        visibleDateMessageId: ''
     }
 
     changeMessage = (text) => {
@@ -130,6 +131,10 @@ class MessengerComponent extends Component {
         this.setState({scrollOffset: offset});
     }
 
+    showDateForMessage = (id) => {
+        this.setState({ visibleDateMessageId: id });
+    }
+
     render() {
         let messages = this.state.messages;
         let messageGroups = [];
@@ -176,7 +181,9 @@ class MessengerComponent extends Component {
                             messages={messageGroup} 
                             username={messageGroup[0].username}
                             isMine={messageGroup[0].isMine}
-                            imageUrl={messageGroup[0].imageUrl}/>);
+                            imageUrl={messageGroup[0].imageUrl}
+                            showDateForMessage={this.showDateForMessage}
+                            visibleDateMessageId={this.state.visibleDateMessageId}/>);
                     })}
                 </ScrollView>
                 <View style={styles.senderContainer}>
