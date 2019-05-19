@@ -4,11 +4,14 @@ const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', '
 const dateService = {
     formatDate: function(dateString) {
         const date = new Date(dateString);
-        return `${date.getDate()}.${monthsShort[date.getMonth()]}.${date.getFullYear()}`;
+        const dayOfTheMonth = (date.getDate() + '').padStart(2, '0');
+        return `${dayOfTheMonth} ${monthsShort[date.getMonth()]} ${date.getFullYear()}`;
     },
     formatTime: function(dateString) {
         const date = new Date(dateString);
-        return `${date.getHours()}:${date.getMinutes()}`;
+        const hours = (date.getHours() + '').padStart(2, '0');
+        const minutes = (date.getMinutes() + '').padStart(2, '0');
+        return `${hours}:${minutes}`;
     }
 };
 

@@ -129,6 +129,7 @@ class MessengerComponent extends Component {
     }
 
     showDateForMessage = (id) => {
+        id = (id !== this.state.visibleDateMessageId) ? id : '';
         this.setState({ visibleDateMessageId: id });
     }
 
