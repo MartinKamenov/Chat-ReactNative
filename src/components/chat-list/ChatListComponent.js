@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, Button } from 'react-native';
+import { View, ScrollView, StyleSheet, Button, ToastAndroid } from 'react-native';
 import apiService from '../../services/apiService';
 import ChatDetailsComponent from './ChatDetailsComponent';
 import constants from '../../constants/constants';
 import LoadingComponent from '../loading/LoadingComponent';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class ChatListComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -20,12 +21,18 @@ class ChatListComponent extends Component {
             headerTintColor: constants.SECONDARY_COLOR
         };
 
-        if(params.fetchChats) {
+        if(params.fetchChats && params.logout) {
             navigationOptions.headerRight = (
-                <Button
-                    onPress={params.fetchChats}
-                    title='Refresh'
-                />
+                <View style={styles.headerButtonsWrapper}>
+                    <Button
+                        onPress={params.fetchChats}
+                        title='Refresh'
+                    />
+                    <Button
+                        onPress={params.logout}
+                        title='Logout'
+                    />
+                </View>
             );
         }
         
@@ -42,7 +49,7 @@ class ChatListComponent extends Component {
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({ fetchChats: this._fetchChats });
+        this.props.navigation.setParams({ fetchChats: this._fetchChats, logout: this._logout });
         this._fetchChats();
     }
 
@@ -57,6 +64,25 @@ class ChatListComponent extends Component {
             this.setState({ chats: users, isLoading: false });
         }).catch((er) => {
             console.log(er.message);
+        });
+    }
+
+    _logout = () => {
+        apiService.logout()
+        .then((response) => {
+            const message = response['_bodyText'];
+            console.log(message);
+            if(message === constants.LOGOUT_SUCCESS_MESSAGE) {
+                ToastAndroid.show(message, constants.TOAST_DUARTION);
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'LoginComponent'})
+                    ] 
+                });
+        
+                this.props.navigation.dispatch(resetAction);
+            }
         });
     }
     render() {
@@ -74,7 +100,7 @@ class ChatListComponent extends Component {
                     {
                         this.state.chats.map((chat, i) => {
                             return (
-                                <ChatDetailsComponent 
+                                <ChatDetailsComponent
                                     user={chat} 
                                     showChat={this.showChat} 
                                     key={i}/>
@@ -93,6 +119,9 @@ const styles = StyleSheet.create({
         backgroundColor: constants.PRIMARY_COLOR,
         height: '100%',
         width: '100%'
+    },
+    headerButtonsWrapper: {
+        flexDirection: 'row'
     }
 });
  

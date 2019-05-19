@@ -50,6 +50,11 @@ const apiService = {
         
         const url = constants.API_URL + constants.REGISTER_PATH + query;
         return fetch(url, postData);
+    },
+
+    logout: function() {
+        const url = constants.API_URL + constants.LOGOUT_PATH;
+        return fetch(url, postData);
     }
 };
 
