@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Button } from 'react-native';
 import apiService from '../../services/apiService';
 import ChatDetailsComponent from './ChatDetailsComponent';
 import constants from '../../constants/constants';
+import LoadingComponent from '../loading/LoadingComponent';
 
 class ChatListComponent extends Component {
-    static navigationOptions = () => {
-        return {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        
+        const navigationOptions = {
             title: 'Messenger',
             headerTitleStyle: {
                 color: constants.SECONDARY_COLOR
@@ -16,9 +19,21 @@ class ChatListComponent extends Component {
             },
             headerTintColor: constants.SECONDARY_COLOR
         };
+
+        if(params.fetchChats) {
+            navigationOptions.headerRight = (
+                <Button
+                    onPress={params.fetchChats}
+                    title='Refresh'
+                />
+            );
+        }
+        
+        return navigationOptions;
     };
     state = {
-        chats: []
+        chats: [],
+        isLoading: true
     }
 
     showChat = (chatId) => {
@@ -27,18 +42,31 @@ class ChatListComponent extends Component {
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({ fetchChats: this._fetchChats });
+        this._fetchChats();
+    }
+
+    _fetchChats = () => {
+        this.setState({ isLoading: true });
         apiService.getOtherUsers()
         .then((response) => {
             let jsonResponse = response.json();
             return jsonResponse;
         })
         .then((users) => {
-            this.setState({ chats: users });
+            this.setState({ chats: users, isLoading: false });
         }).catch((er) => {
             console.log(er.message);
         });
     }
-    render() { 
+    render() {
+        if(this.state.isLoading) {
+            return (
+                <View style={styles.chatListContainer}>
+                    <LoadingComponent loadingText='Fetching messages'/>
+                </View>
+            );
+        }
         return (
             <View style={styles.chatListContainer}>
                 <ScrollView>
