@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, Button } from 'react-native';
+import { View, ScrollView, StyleSheet, Button, ToastAndroid } from 'react-native';
 import apiService from '../../services/apiService';
 import ChatDetailsComponent from './ChatDetailsComponent';
 import constants from '../../constants/constants';
 import LoadingComponent from '../loading/LoadingComponent';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class ChatListComponent extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -69,7 +70,19 @@ class ChatListComponent extends Component {
     _logout = () => {
         apiService.logout()
         .then((response) => {
-            console.log(response);
+            const message = response['_bodyText'];
+            console.log(message);
+            if(message === constants.LOGOUT_SUCCESS_MESSAGE) {
+                ToastAndroid.show(message, constants.TOAST_DUARTION);
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'LoginComponent'})
+                    ] 
+                });
+        
+                this.props.navigation.dispatch(resetAction);
+            }
         });
     }
     render() {
@@ -87,7 +100,7 @@ class ChatListComponent extends Component {
                     {
                         this.state.chats.map((chat, i) => {
                             return (
-                                <ChatDetailsComponent 
+                                <ChatDetailsComponent
                                     user={chat} 
                                     showChat={this.showChat} 
                                     key={i}/>
