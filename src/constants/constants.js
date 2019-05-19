@@ -1,4 +1,4 @@
-const DOMAIN = '192.168.0.129:5000';
+const DOMAIN = 'mkchat-api.herokuapp.com';
 
 const constants = {
     API_URL: `http://${DOMAIN}`,
