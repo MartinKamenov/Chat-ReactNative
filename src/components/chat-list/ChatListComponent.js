@@ -20,12 +20,18 @@ class ChatListComponent extends Component {
             headerTintColor: constants.SECONDARY_COLOR
         };
 
-        if(params.fetchChats) {
+        if(params.fetchChats && params.logout) {
             navigationOptions.headerRight = (
-                <Button
-                    onPress={params.fetchChats}
-                    title='Refresh'
-                />
+                <View style={styles.headerButtonsWrapper}>
+                    <Button
+                        onPress={params.fetchChats}
+                        title='Refresh'
+                    />
+                    <Button
+                        onPress={params.logout}
+                        title='Logout'
+                    />
+                </View>
             );
         }
         
@@ -42,7 +48,7 @@ class ChatListComponent extends Component {
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({ fetchChats: this._fetchChats });
+        this.props.navigation.setParams({ fetchChats: this._fetchChats, logout: this._logout });
         this._fetchChats();
     }
 
@@ -57,6 +63,13 @@ class ChatListComponent extends Component {
             this.setState({ chats: users, isLoading: false });
         }).catch((er) => {
             console.log(er.message);
+        });
+    }
+
+    _logout = () => {
+        apiService.logout()
+        .then((response) => {
+            console.log(response);
         });
     }
     render() {
@@ -93,6 +106,9 @@ const styles = StyleSheet.create({
         backgroundColor: constants.PRIMARY_COLOR,
         height: '100%',
         width: '100%'
+    },
+    headerButtonsWrapper: {
+        flexDirection: 'row'
     }
 });
  
