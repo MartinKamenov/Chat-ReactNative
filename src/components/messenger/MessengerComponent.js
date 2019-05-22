@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#000',
+        backgroundColor: constants.MESSENGER_BACKGROUND_COLOR,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     messageInput: {
         flex: 1,
         backgroundColor: constants.SECONDARY_COLOR,
-        color: constants.PRIMARY_COLOR
+        color: '#000000'
     },
     sendButton: {
         justifyContent: 'center',
